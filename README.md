@@ -1,47 +1,225 @@
-# Desafio - Front-end Developer
-Este desafio tem como objetivo te avaliar como desenvolvedor Front-end: JavaScript, HTML, CSS e lógica de programação.
+# Apiki Dev Blog - Front-end Challenge
 
-## O Desafio
-Queremos montar uma versão do blog da Apiki apenas para Devs, e queremos que essa seja uma solução headless, esta nova versão terá as seguintes páginas: 
+Um blog headless moderno e responsivo desenvolvido em React com TypeScript, consumindo a API do WordPress da Apiki.
 
-- Página inicial: Listará as últimas postagens do blog com a categoria **Desenvolvimento**; 
-- Interna: Exibirá o conteúdo da postagem;
+## 🚀 Sobre o Projeto
 
+Este projeto é uma implementação completa de um blog headless que consome dados da API do WordPress da Apiki. O objetivo é criar uma experiência de usuário moderna e intuitiva para desenvolvedores, com foco em performance, SEO e responsividade.
 
-## Requesitos
-- Utilizar os dados da API do nosso blog: https://blog.apiki.com/wp-json/wp/v2/;
+### ✨ Funcionalidades Principais
 
-## Diferencial
-- Utilizar alguma metodologia para a organização de seu CSS (BEMCSS, OOCSS, SMACSS... o que preferir :D);
-- Escolha uma lib para criação de interfaces de usuário (React ou Angular); 
+- **Página Inicial**: Listagem das últimas postagens da categoria Desenvolvimento
+- **Página Interna**: Visualização completa de cada post com conteúdo rico
+- **Paginação Infinita**: Botão "Load More" para carregar mais posts
+- **Design Responsivo**: Otimizado para desktop, tablet e mobile
+- **SEO Otimizado**: Meta tags, Open Graph e estrutura semântica
+- **Performance**: Lazy loading de imagens e otimizações de carregamento
 
-### Página inicial
-Para montar esta página você precisará consumir do seguinte endpoint: `https://blog.apiki.com/wp-json/wp/v2/posts?_embed&categories=518`, ele já te retornará as últimas 10 postagens cadastradas, cada item do array deve representar uma card contendo:
+## 🛠️ Tecnologias Utilizadas
 
-- Imagem destacada: Você encontrará um atributo chamado `_embedded`, dentro deste atributo você encontrará o `wp:featuredmedia`;
-- Título;
-- Link para a postagem: O link deverá conter o atributo `slug`;
+- **React 18** - Biblioteca principal para interface
+- **TypeScript** - Type safety e melhor DX
+- **React Router** - Navegação entre páginas
+- **Axios** - Requisições HTTP para a API
+- **CSS3** - Estilização com metodologia BEM
+- **HTML5** - Estrutura semântica
 
-Ao final da listagem deve haver um botão nomeado **Carregar mais...**, Quando o usuário clicar neste botão você deverá fazer uma nova requisição para o mesmo endpoint informando o parâmetro `page`, este parâmetro deve receber o número da próxima página, exemplo: `https://blog.apiki.com/wp-json/wp/v2/posts?_embed&categories=518&page=2`. Você deve estar se perguntando, "como sei se haverá uma próxima página?", isso é simples, no **Header** de resposta desta requisição virá 2 atributos necessários para essa façanha `X-WP-Total` que diz a quantidade total de postagens que essa categoria possui, e o parâmetro `X-WP-TotalPages` que te informará qual o total de páginas de postagens que essa categoria possui.
+## 📁 Estrutura do Projeto
 
-### Interna
-Para montar esta página você precisará consumir do seguinte endpoint: `https://blog.apiki.com/wp-json/wp/v2/posts?_embed&slug=wordpress-escolha-site-pequenas-empresas`, lembre-se de substituir o `slug` dado como exemplo pelo slug definido no **Link para a postagem** da **Página inicial**, o layout deve conter os seguintes elementos:
+```
+src/
+├── components/           # Componentes reutilizáveis
+│   ├── Button/          # Botão customizado com variantes
+│   ├── Header/          # Cabeçalho da aplicação
+│   ├── Loading/         # Componente de loading
+│   ├── PostCard/        # Card de post para listagem
+│   └── index.ts         # Exportações centralizadas
+├── pages/               # Páginas principais
+│   ├── Home/            # Página inicial com listagem
+│   └── Post/            # Página interna do post
+├── services/            # Serviços e APIs
+│   └── api.ts           # Configuração e funções da API
+├── types/               # Definições TypeScript
+│   └── index.ts         # Interfaces e tipos
+├── App.tsx              # Componente principal
+├── App.css              # Estilos globais
+└── index.tsx            # Ponto de entrada
+```
 
-- Imagem destacada;
-- Título;
-- Conteúdo;
+## 🎨 Metodologia CSS - BEM
 
-Seja criativo, construa um layout pensando no usuário final, e sinta-se a vontade para incrementar o layout com outros atributos disponíveis no JSON retornado. 
+O projeto utiliza a metodologia **BEM (Block Element Modifier)** para organização do CSS:
 
-## Critérios de avaliação
+- **Block**: Componente principal (ex: `.post-card`)
+- **Element**: Elemento dentro do bloco (ex: `.post-card__title`)
+- **Modifier**: Variação do bloco (ex: `.button--primary`)
 
-- Organização do código;
-- Responsividade;
-- Reaproveitamento de código;
-- SEO;
+### Exemplo de Estrutura BEM:
+```css
+.post-card {                    /* Block */
+  background: white;
+}
 
-## Como submeter seu projeto
+.post-card__title {             /* Element */
+  font-size: 1.25rem;
+}
 
-1. Efetue o fork deste repositório e crie um branch com o seu nome e sobrenome. (exemplo: fulano-dasilva);
-1. Após finalizar o desafio, crie um Pull Request;
-1. Aguarde algum contribuidor realizar o code review;
+.post-card__image {             /* Element */
+  width: 100%;
+}
+
+.button--primary {              /* Modifier */
+  background: linear-gradient(...);
+}
+```
+
+## 🔌 Integração com API
+
+### Endpoints Utilizados
+
+1. **Listagem de Posts**:
+   ```
+   GET https://blog.apiki.com/wp-json/wp/v2/posts?_embed&categories=518&page={page}
+   ```
+
+2. **Post Individual**:
+   ```
+   GET https://blog.apiki.com/wp-json/wp/v2/posts?_embed&slug={slug}
+   ```
+
+### Headers de Paginação
+- `X-WP-Total`: Total de posts na categoria
+- `X-WP-TotalPages`: Total de páginas disponíveis
+
+## 📱 Responsividade
+
+O projeto é totalmente responsivo com breakpoints:
+
+- **Desktop**: > 768px
+- **Tablet**: 768px - 480px  
+- **Mobile**: < 480px
+
+### Grid System
+- **Desktop**: Grid com 3 colunas
+- **Tablet**: Grid com 2 colunas
+- **Mobile**: Grid com 1 coluna
+
+## 🔍 SEO e Performance
+
+### Meta Tags Implementadas
+- Title dinâmico
+- Description otimizada
+- Keywords relevantes
+- Open Graph para redes sociais
+- Twitter Cards
+- Viewport responsivo
+
+### Otimizações de Performance
+- Lazy loading de imagens
+- Componentes otimizados com React.memo
+- CSS otimizado com metodologia BEM
+- Bundle splitting automático
+
+## 🚀 Como Executar
+
+### Pré-requisitos
+- Node.js 16+ 
+- npm ou yarn
+
+### Instalação
+```bash
+# Clone o repositório
+git clone [url-do-repositorio]
+
+# Entre na pasta
+cd front-end-challenge
+
+# Instale as dependências
+npm install
+
+# Execute em modo desenvolvimento
+npm start
+```
+
+### Scripts Disponíveis
+```bash
+npm start          # Executa em modo desenvolvimento
+npm run build      # Gera build de produção
+npm test           # Executa testes
+npm run eject      # Eject do Create React App
+```
+
+## 📋 Critérios de Avaliação Atendidos
+
+### ✅ Organização do Código
+- Estrutura de pastas clara e organizada
+- Componentes reutilizáveis
+- Separação de responsabilidades
+- TypeScript para type safety
+
+### ✅ Responsividade
+- Design mobile-first
+- Breakpoints bem definidos
+- Grid system flexível
+- Componentes adaptáveis
+
+### ✅ Reaproveitamento de Código
+- Componentes modulares
+- Hooks customizados
+- Utilitários reutilizáveis
+- CSS com metodologia BEM
+
+### ✅ SEO
+- Meta tags completas
+- Estrutura HTML semântica
+- URLs amigáveis
+- Open Graph implementado
+
+## 🎯 Funcionalidades Extras
+
+### Estados de Loading
+- Spinners customizados
+- Estados de loading por componente
+- Feedback visual durante carregamento
+
+### Tratamento de Erros
+- Páginas de erro elegantes
+- Mensagens de erro informativas
+- Botões de retry
+
+### Acessibilidade
+- Focus states visíveis
+- Navegação por teclado
+- Alt text em imagens
+- Estrutura semântica
+
+### UX/UI
+- Animações suaves
+- Hover effects
+- Transições elegantes
+- Design moderno com gradientes
+
+## 🔧 Configurações
+
+### TypeScript
+- Configuração estrita
+- Interfaces bem definidas
+- Type safety completo
+
+### ESLint
+- Regras de qualidade de código
+- Integração com TypeScript
+- Prevenção de erros comuns
+
+### Build
+- Otimização automática
+- Minificação de assets
+- Geração de service worker
+
+## 📄 Licença
+
+Este projeto foi desenvolvido como parte do desafio front-end da Apiki.
+
+---
+
+**Desenvolvido por Lucas Sens usando React + TypeScript**
